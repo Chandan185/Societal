@@ -12,7 +12,7 @@ func main() {
 	cnf := config{
 		addr: env.GetString("PORT", ":8000"),
 		db: dbConfig{
-			addr:        env.GetString("DB_ADDR", "postgres://user:adminpassword@localhost/societal?sslmode=disabled"),
+			addr:        env.GetString("DB_ADDR", "postgres://user:adminpassword@localhost/socialnetwork?sslmode=disable"),
 			maxOpenConn: env.GetInt("DB_MAX_OPEN_CONNS", 30),
 			maxIdleConn: env.GetInt("DB_MAX_IDLE_CONNS", 30),
 			maxIdleTime: env.GetString("DB_MAX_IDLE_TIME", "15m"),
