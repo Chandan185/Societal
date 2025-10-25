@@ -8,6 +8,8 @@ import (
 	"github.com/Chandan185/Societal/internal/store"
 )
 
+const version = "1.0.0"
+
 func main() {
 	cnf := config{
 		addr: env.GetString("PORT", ":8000"),
@@ -17,10 +19,11 @@ func main() {
 			maxIdleConn: env.GetInt("DB_MAX_IDLE_CONNS", 30),
 			maxIdleTime: env.GetString("DB_MAX_IDLE_TIME", "15m"),
 		},
+		env: env.GetString("ENV", "development"),
 	}
 	db, err := db.New(cnf.db.addr, cnf.db.maxIdleTime, cnf.db.maxOpenConn, cnf.db.maxIdleConn)
 	if err != nil {
-		log.Panic(err)
+		log.Panic("Error connecting to the database:", err)
 	}
 	defer db.Close()
 	log.Println("Database connection pool established")
