@@ -25,6 +25,19 @@ type UpdatePostPayload struct {
 	Content *string `json:"content" validate:"omitempty,max=1000"`
 }
 
+// createPost godoc
+//
+//	@Summary		Creates post
+//	@Description	Create a new post
+//	@Tags			posts
+//	@Accept			json
+//	@Produce		json
+//	@Param			post	body		CreatePostPayload	true	"Post payload"
+//	@Success		200		{object}	store.Post
+//	@Failure		400		{object}	error	"invalid payload"
+//	@Failure		500		{object}	error	"internal server error"
+//	@Security		ApiKeyAuth
+//	@Router			/posts [post]
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreatePostPayload
 	if err := readJSON(w, r, &payload); err != nil {
@@ -56,6 +69,19 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	}
 }
 
+// getPost godoc
+//
+//	@Summary		get post
+//	@Description	get a post by ID
+//	@Tags			posts
+//	@Accept			json
+//	@Produce		json
+//	@Param			postID	path		int	true	"Post ID"
+//	@Success		200		{object}	store.Post
+//	@Failure		404		{object}	error	"post not found"
+//	@Failure		500		{object}	error	"internal server error"
+//	@Security		ApiKeyAuth
+//	@Router			/posts/{postID} [get]
 func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 	post := getPostFromCtx(r)
 	comments, err := app.store.Comments.GetByPostID(r.Context(), post.ID)
@@ -70,6 +96,19 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// deletePost godoc
+//
+//	@Summary		deletes post
+//	@Description	delete a post by ID
+//	@Tags			posts
+//	@Accept			json
+//	@Produce		json
+//	@Param			postID	path		int		true	"Post ID"
+//	@Success		204		{string}	string	"Post deleted"
+//	@Failure		404		{object}	error	"post not found"
+//	@Failure		500		{object}	error	"internal server error"
+//	@Security		ApiKeyAuth
+//	@Router			/posts/{postID} [delete]
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "postID")
 	id, err := strconv.ParseInt(idParam, 10, 64)
@@ -90,6 +129,19 @@ func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// updatePost godoc
+//
+//	@Summary		update post
+//	@Description	update a post by ID
+//	@Tags			posts
+//	@Accept			json
+//	@Produce		json
+//	@Param			postID	path		int	true	"Post ID"
+//	@Success		200		{object}	store.Post
+//	@Failure		404		{object}	error	"post not found"
+//	@Failure		500		{object}	error	"internal server error"
+//	@Security		ApiKeyAuth
+//	@Router			/posts/{postID} [patch]
 func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request) {
 	post := getPostFromCtx(r)
 

@@ -16,3 +16,7 @@ migrate-down:
 .PHONY: seed
 seed:
 	@go run ./cmd/migrate/migrations/seed/main.go
+
+.PHONY: gen-swagger
+gen-swagger:
+	@swag init -g ./api/main.go -d cmd,internal && swag fmt
